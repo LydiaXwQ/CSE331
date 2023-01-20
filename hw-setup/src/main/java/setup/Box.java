@@ -12,7 +12,10 @@
 package setup;
 
 import java.lang.Iterable;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
+
 
 /**
  * This is a container can be used to contain Balls. The key
@@ -25,7 +28,7 @@ public class Box implements Iterable<Ball> {
      * ballContainer is used to internally store balls for this Box.
      */
     private BallContainer ballContainer;
-
+    private double maxVolume;
     /**
      * Constructor that creates a new box.
      *
@@ -33,7 +36,8 @@ public class Box implements Iterable<Ball> {
      */
     public Box(double maxVolume) {
         // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        ballContainer = new BallContainer();
+        this.maxVolume = maxVolume;
     }
 
     /**
@@ -65,7 +69,11 @@ public class Box implements Iterable<Ball> {
      */
     public boolean add(Ball b) {
         // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        if (getVolume() + b.getVolume() > maxVolume || contains(b)) {
+            return false;
+        } else {
+            return ballContainer.add(b);
+        }
     }
 
     /**
@@ -78,7 +86,14 @@ public class Box implements Iterable<Ball> {
      */
     public Iterator<Ball> getBallsFromSmallest() {
         // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        ArrayList<Ball> arr = new ArrayList<>();
+        Iterator<Ball> ballIterator = iterator();
+        while(ballIterator.hasNext()) {
+            arr.add(ballIterator.next());
+        }
+        //?? why can we put new ballVolumeComparator with ()
+        arr.sort(new ballVolumeComparator());
+        return arr.iterator();
     }
 
     /**
@@ -135,6 +150,23 @@ public class Box implements Iterable<Ball> {
      */
     public boolean contains(Ball b) {
         return ballContainer.contains(b);
+    }
+
+    /**
+     * This comparator compares volume of two balls.
+     */
+    public class ballVolumeComparator implements Comparator<Ball> {
+        /**
+         * This method compares volume of two balls and return a negative integer, zero, or a positive integer
+         * as the first argument is less than, equal to, or greater than the second.
+         * @param b1 the first object to be compared.
+         * @param b2 the second object to be compared.
+         * @return negative integer, zero, or a positive integer as the first argument is less than, equal to,
+         * or greater than the second.
+         */
+        public int compare(Ball b1, Ball b2) {
+            return Double.compare(b1.getVolume(), b2.getVolume());
+        }
     }
 
 }
