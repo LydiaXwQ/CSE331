@@ -91,7 +91,6 @@ public class Box implements Iterable<Ball> {
         while(ballIterator.hasNext()) {
             arr.add(ballIterator.next());
         }
-        //?? why can we put new ballVolumeComparator with ()
         arr.sort(new ballVolumeComparator());
         return arr.iterator();
     }

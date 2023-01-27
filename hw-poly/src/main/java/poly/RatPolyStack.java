@@ -32,6 +32,7 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * Stack containing the RatPoly objects.
      */
     private final Stack<RatPoly> polys;
+    private int size;
 
     // Abstraction Function:
     // AF(this) = A LIFO stack where the top of this.polys is the top of this,
@@ -48,8 +49,8 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects Constructs a new RatPolyStack, [].
      */
     public RatPolyStack() {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPolyStack constructor is not yet implemented");
+        polys = new Stack<>();
+        size = 0;
     }
 
     /**
@@ -69,8 +70,7 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @return the size of this sequence.
      */
     public int size() {
-    	// TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPolyStack.size() is not yet implemented");
+    	return size;
     }
 
     /**
@@ -82,8 +82,8 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects this_post = [p]:this.
      */
     public void push(RatPoly p) {
-    	// TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPolyStack.push() is not yet implemented");
+    	polys.push(p);
+        size++;
     }
 
     /**
@@ -95,8 +95,8 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p]:S then this_post = S.
      */
     public RatPoly pop() {
-       // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPolyStack.pop() is not yet implemented");
+        size--;
+       return polys.pop();
     }
 
     /**
@@ -107,8 +107,9 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p]:S then this_post = [p, p]:S.
      */
     public void dup() {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPolyStack.dup() is not yet implemented");
+        RatPoly top = polys.peek();
+        polys.push(top);
+        size++;
     }
 
     /**
@@ -119,8 +120,10 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p1, p2]:S then this_post = [p2, p1]:S.
      */
     public void swap() {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPolyStack.swap() is not yet implemented");
+        RatPoly p1 = polys.pop();
+        RatPoly p2 = polys.pop();
+        polys.push(p1);
+        polys.push(p2);
     }
 
     /**
@@ -130,8 +133,8 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects this_post = [].
      */
     public void clear() {
-       // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPolyStack.clear() is not yet implemented");
+       polys.clear();
+       size = 0;
     }
 
     /**
@@ -142,8 +145,17 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.requires {@code index >= 0 && index < this.size()}
      */
     public RatPoly getNthFromTop(int index) {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPolyStack.getNthFromTop() unimplemented!\n");
+        Stack<RatPoly> temp = new Stack<>();
+        //pop the number of polys into temp stack
+        for (int i = 1; i <= index; i++) {
+            temp.push(polys.pop());
+        }
+        RatPoly p = polys.peek();
+        //push them back to the original poly stack.
+        for (int i = 1; i <= index; i++) {
+            polys.push(temp.pop());
+        }
+        return p;
     }
 
     /**
@@ -154,8 +166,11 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p1, p2]:S then this_post = [p3]:S where p3 = p1 + p2.
      */
     public void add() {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPolyStack.add() is not yet implemented");
+        RatPoly p1 = polys.pop();
+        RatPoly p2 = polys.pop();
+        RatPoly sum = p1.add(p2);
+        polys.push(sum);
+        size--;
     }
 
     /**
@@ -167,8 +182,11 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p1, p2]:S then this_post = [p3]:S where p3 = p2 - p1.
      */
     public void sub() {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPolyStack.sub() is not yet implemented");
+        RatPoly p1 = polys.pop();
+        RatPoly p2 = polys.pop();
+        RatPoly difference = p2.sub(p1);
+        polys.push(difference);
+        size--;
     }
 
     /**
@@ -180,9 +198,11 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p1, p2]:S then this_post = [p3]:S where p3 = p1 * p2.
      */
     public void mul() {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPolyStack.mul() is not yet implemented");
-
+        RatPoly p1 = polys.pop();
+        RatPoly p2 = polys.pop();
+        RatPoly mul = p1.mul(p2);
+        polys.push(mul);
+        size--;
     }
 
     /**
@@ -194,8 +214,11 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p1, p2]:S then this_post = [p3]:S where p3 = p2 / p1.
      */
     public void div() {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPolyStack.div() is not yet implemented");
+        RatPoly p1 = polys.pop();
+        RatPoly p2 = polys.pop();
+        RatPoly div = p2.div(p1);
+        polys.push(div);
+        size--;
     }
 
     /**
