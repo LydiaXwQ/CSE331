@@ -51,6 +51,7 @@ public final class RatPolyStack implements Iterable<RatPoly> {
     public RatPolyStack() {
         polys = new Stack<>();
         size = 0;
+        checkRep();
     }
 
     /**
@@ -82,8 +83,10 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects this_post = [p]:this.
      */
     public void push(RatPoly p) {
+        checkRep();
     	polys.push(p);
         size++;
+        checkRep();
     }
 
     /**
@@ -95,7 +98,9 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p]:S then this_post = S.
      */
     public RatPoly pop() {
+        checkRep();
         size--;
+        checkRep();
        return polys.pop();
     }
 
@@ -107,9 +112,11 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p]:S then this_post = [p, p]:S.
      */
     public void dup() {
+        checkRep();
         RatPoly top = polys.peek();
         polys.push(top);
         size++;
+        checkRep();
     }
 
     /**
@@ -120,10 +127,12 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p1, p2]:S then this_post = [p2, p1]:S.
      */
     public void swap() {
+        checkRep();
         RatPoly p1 = polys.pop();
         RatPoly p2 = polys.pop();
         polys.push(p1);
         polys.push(p2);
+        checkRep();
     }
 
     /**
@@ -133,8 +142,10 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects this_post = [].
      */
     public void clear() {
-       polys.clear();
-       size = 0;
+        checkRep();
+        polys.clear();
+        size = 0;
+        checkRep();
     }
 
     /**
@@ -145,6 +156,7 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.requires {@code index >= 0 && index < this.size()}
      */
     public RatPoly getNthFromTop(int index) {
+        checkRep();
         Stack<RatPoly> temp = new Stack<>();
         //pop the number of polys into temp stack
         for (int i = 1; i <= index; i++) {
@@ -155,6 +167,7 @@ public final class RatPolyStack implements Iterable<RatPoly> {
         for (int i = 1; i <= index; i++) {
             polys.push(temp.pop());
         }
+        checkRep();
         return p;
     }
 
@@ -166,11 +179,13 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p1, p2]:S then this_post = [p3]:S where p3 = p1 + p2.
      */
     public void add() {
+        checkRep();
         RatPoly p1 = polys.pop();
         RatPoly p2 = polys.pop();
         RatPoly sum = p1.add(p2);
         polys.push(sum);
         size--;
+        checkRep();
     }
 
     /**
@@ -182,11 +197,13 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p1, p2]:S then this_post = [p3]:S where p3 = p2 - p1.
      */
     public void sub() {
+        checkRep();
         RatPoly p1 = polys.pop();
         RatPoly p2 = polys.pop();
         RatPoly difference = p2.sub(p1);
         polys.push(difference);
         size--;
+        checkRep();
     }
 
     /**
@@ -198,11 +215,13 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p1, p2]:S then this_post = [p3]:S where p3 = p1 * p2.
      */
     public void mul() {
+        checkRep();
         RatPoly p1 = polys.pop();
         RatPoly p2 = polys.pop();
         RatPoly mul = p1.mul(p2);
         polys.push(mul);
         size--;
+        checkRep();
     }
 
     /**
@@ -214,11 +233,13 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      * @spec.effects If this = [p1, p2]:S then this_post = [p3]:S where p3 = p2 / p1.
      */
     public void div() {
+        checkRep();
         RatPoly p1 = polys.pop();
         RatPoly p2 = polys.pop();
         RatPoly div = p2.div(p1);
         polys.push(div);
         size--;
+        checkRep();
     }
 
     /**

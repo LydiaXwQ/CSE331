@@ -79,6 +79,7 @@ public final class RatPoly {
      */
     public RatPoly() {
         terms = new ArrayList<>();
+        checkRep();
     }
 
     /**
@@ -148,9 +149,11 @@ public final class RatPoly {
      * @spec.requires !this.isNaN()
      */
     public int degree() {
+        checkRep();
         if(terms.size() == 0) {
             return 0;
         }
+        checkRep();
         return terms.get(0).getExpt();
     }
 
@@ -163,11 +166,13 @@ public final class RatPoly {
      * @spec.requires !this.isNaN()
      */
     public RatTerm getTerm(int deg) {
+        checkRep();
         for (int i = 0; i < terms.size(); i++) {
             if (terms.get(i).getExpt() == deg) {
                 return terms.get(i);
             }
         }
+        checkRep();
         return RatTerm.ZERO;
     }
 
@@ -177,11 +182,14 @@ public final class RatPoly {
      * @return true if and only if this has some coefficient = "NaN".
      */
     public boolean isNaN() {
+        checkRep();
         for (int i = 0; i < terms.size(); i++) {
             if (terms.get(i).getCoeff().isNaN()) {
+                checkRep();
                 return true;
             }
         }
+        checkRep();
         return false;
     }
 
@@ -287,11 +295,13 @@ public final class RatPoly {
      * @return a RatPoly equal to "0 - this"; if this.isNaN(), returns some r such that r.isNaN().
      */
     public RatPoly negate() {
+        checkRep();
     	if(this.isNaN()) {
             return NaN;
         }
         ArrayList<RatTerm> myCopy = this.copy();
         scaleCoeff(myCopy, new RatNum(-1));
+        checkRep();
         return new RatPoly(myCopy);
     }
 
@@ -304,6 +314,7 @@ public final class RatPoly {
      * @spec.requires p != null
      */
     public RatPoly add(RatPoly p) {
+        p.checkRep();
         if(this.isNaN() || p.isNaN()) {
             return NaN;
         }
@@ -313,9 +324,14 @@ public final class RatPoly {
         for(RatTerm term : terms) {
             sortedInsert(myCopy, term);
         }
+        p.checkRep();
         return new RatPoly(myCopy);
     }
 
+    /**
+     * copy all the terms from a RatPoly
+     * @return a copy of all the terms from RatPoly
+     */
     private ArrayList<RatTerm> copy () {
         ArrayList<RatTerm> myCopy = new ArrayList<>();
         for (int i = 0; i < terms.size(); i++) {
@@ -333,9 +349,11 @@ public final class RatPoly {
      * @spec.requires p != null
      */
     public RatPoly sub(RatPoly p) {
+        p.checkRep();
         if(this.isNaN() || p.isNaN()) {
             return NaN;
         }
+        p.checkRep();
         return this.add(p.negate());
     }
 
@@ -348,6 +366,7 @@ public final class RatPoly {
      * @spec.requires p != null
      */
     public RatPoly mul(RatPoly p) {
+        p.checkRep();
         if (this.isNaN() || p.isNaN()) {
             return NaN;
         }
@@ -404,6 +423,7 @@ public final class RatPoly {
      * @spec.requires p != null
      */
     public RatPoly div(RatPoly p) {
+        p.checkRep();
         if (p.terms.isEmpty() || p.isNaN() || this.isNaN()) {
             return NaN;
         }
@@ -431,6 +451,7 @@ public final class RatPoly {
             remainder = remainder.sub(quotPoly.mul(p));
             quotient = quotient.add(quotPoly);
         }
+        quotient.checkRep();
         return quotient;
 
     }
@@ -443,6 +464,7 @@ public final class RatPoly {
      * is 5, and "x^2-x" evaluated at 3 is 6. If (this.isNaN() == true), return Double.NaN.
      */
     public double eval(double d) {
+        checkRep();
         if (this.isNaN()) {
             return Double.NaN;
         }
@@ -450,6 +472,7 @@ public final class RatPoly {
         for (RatTerm term : this.terms) {
             output += term.eval(d);
         }
+        checkRep();
         return output;
     }
 

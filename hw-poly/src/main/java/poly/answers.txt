@@ -108,18 +108,23 @@
                 value (i.e 1/2, 2/4) will have the same hashcode.
     Disadvantage: Increase in time complexity by introducing loop from gcd.
 
+    checkRep will need to remove the if statement because it no longer needs to check if it's in reduced form
+    or not.
+    Advantage: Reduce run time by removing the loop from gcd
+    Disadvantage: Easier for checking out.
+
 
 
 2. Alternate add, sub, mul, div
+    It fails to meet the specification of the methods because they don't have a modified clause.
     It fails to meet the Class specification. While the specification says RatNum class represents
     an immutable rational number, the new version of the method does mutate it.
 
 
 
 3. Constructor checkReps
-    Because it's an immutable class, where all the fields are declared as final,
+    Because there is no mutators in the methods, and all the fields are variables and declared as final
     so once they are initialized, they can't be mutated through-out the whole implementation.
-    Also, for the methods, they return a new RatNum without altering the original object.
     Therefore, we only need to check if our initialization is valid in constructor,
     and once we check it is initialized correctly, the object won't change so that it will
     always satisfy the invariant.
@@ -139,6 +144,11 @@
 
 
 2. Weakened Rep Invariant
+    The constructor RatTerm(RatNum c, int e) no longer need to set expt = 0, when coefficient is 0.
+    Advantage: Could be quicker in construction because it doesn't need to check c is zero or not.
+    Disadvantage: Make code in other methods more complicated because we need to keep track of the zeros
+                  in every method instead of doing it only once in the constructor.
+
     toString should add a check to say if coefficient is 0, we want to append "0" for holding its spec.
     Advantage: Adds more clarity on how do we deal with zeros. It's more intuitive to do in this way
                 than enforcing all 0 coeff term to have 0 expt, and say they are equivalent in value.
@@ -148,6 +158,11 @@
     Advantage: Increase clarity by explicitly checking the zero case (when coeff = 0).
     Disadvantage: Needs to add additional check and call isZero method which will make it slower than original.
 
+    equals should change to add additional check for if the coefficient is zero, then return true.
+    Advantage: Add clarity in the code for manually checking this zero case.
+    Disadvantage: This will decrease the efficiency by adding the additional check.
+
+
 
 3. Alternate Rep Invariant
     The constructor need to be changed because when passing in NaN as coefficient, we want to set the
@@ -156,6 +171,10 @@
     Advantage: Add clarity in the code, because it's more intuitive to say a term is NaN than NaN * x^e.
     Disadvantage: Add a little bit more complexity to the code by adding an extra check in the constructor
                   to set c = NaN, e = 0 if the passing in is a NaN.
+
+    checkRep needs to be changed because it needs to check if the expt is zero when coefficient is NaN.
+    Advantage: Adhere to the new invariant, ensure the code doesn't break the invariant.
+    Disadvantage: This will decrease efficiency by doing one more check in the method.
 
 
 4. Preferred Invariants
@@ -176,11 +195,11 @@
 
 2. Alternate Representation
    Advantage: It is easier for us to do the coeff and expt arithmetic, because instead of
-              first finding the term, we could directly do arithmetic on coeff and expt.
+              first finding the term, we could directly do arithmetic on coeff and expt on two lists.
    Disadvantage: Creating two list to store expt and coeff separately will make our code
-                 less efficient, because now we have to traverse two lists to get expt and coeff,
-                 while we only need to traverse one list before. Also, this will increase space complexity
-                 by using the extra list.
+                 less efficient and hard to keep track of, because now we have to traverse
+                 two lists to get expt and coeff, while we only need to traverse one list before.
+                 Also, this will increase space complexity by using the extra list.
 
    I prefer representing polynomial using terms because it is more intuitive and easy
    to keep track of terms rather than exponent and coeff separately.
