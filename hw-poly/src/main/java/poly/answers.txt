@@ -11,9 +11,10 @@
     output = p * q:
     (Special case:
     if q = 0, or p is NaN or q is NaN, return NaN)
-    {inv: output = p * (r_0, r_1, ... + r_i-1) where r_i is the ith term in r}
+    {inv: output = (p_0 + p_1 + ... + p_i-1) * r where p_i is the ith term in p}
     for each term, t_p in p:
         set r = q by making a term-by-term copy of all terms in q to r
+        {inv: output = (r_0 + r_1 + ... + r_k-1) * p_i where r_k is the kth term in r}
         for each term, t_r in r:
         replace t_r in r by doing multiplication of t_r with t_p
         add r into the output.
@@ -24,8 +25,8 @@
         //Create a RatPoly named remainder and initialize it with holding this poly first.
         //Create an empty poly use to holding quotient ---> named quotient
 
-        inv: thisPoly = p * quotient + remainder， where p is the poly they pass in (divisor), and
-        this poly is the dividend
+        {inv: thisPoly = p * quotient + remainder， where p is the poly they pass in (divisor), and
+        this poly is the dividend}
 
         //while remainder is not empty, and the degree of remainder's highest term (tr) is
         //greater than or equal to the degree of divisor (p) 's highest term (td) continue looping:
