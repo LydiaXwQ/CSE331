@@ -8,6 +8,22 @@ interface to a graph. If your design includes multiple classes or interfaces, ex
 included each one; if not, explain whether you considered additional classes and why you decided
 not to include them.
 
+addNode and addEdge methods are mutators methods that are needed for building the graph.
+Since our graph doesn't allow to duplicated nodes and edges, containsNode and containsEdge are useful to have because
+we need them to check if our graph has duplicate nodes or edges.
+listNode, listChildren and size are operations that client can get information about the graph.
+I feel my operations are sufficient because my methods allow the client to be able to perform basic mutations
+to the graph and access particular information of the graph.
+
+My design includes two inner class: Edge and Node.
+They have basic getter methods to allow client to be able to access information of the Edge and Node (i.e label).
+I include Node class because it is more intuitive to have a node as an object. Also, it is easier for me to
+keep track of the node's information (i.e I can access a node object to get its label).
+Similarly, I include Edge class because it is more intuitive to abstract an edge to an object with its
+start and end and label attributes.
+Also, it is easy for me to keep track of the edge's start and end nodes (i.e If I want
+to figure out where the edge is from or to, I can directly get that information from
+its getParent and getChild methods.)
 
 
 
@@ -16,6 +32,24 @@ not to include them.
 
 What was your testing strategy for this assignment? How do your script tests and JUnit tests
 differ from each other (if they do), and why?
+
+My testing strategy of the script test was based on "0, 1, 2" strategy.
+For example, I test for the scenarios when my graph could have 0, 1, and 2 nodes.
+Also, my script testing strategy was focusing on the general functionality of the graph.
+I drew out different states my graph could possibly be (i.e when it has 1 node 1 edge,
+or bi-directional edges.etc)
+In contrast, my Junit test was focusing more on testing the functionality of specific methods, and
+edge cases. For example, I test whether my method throws exception correct when the client passes
+in a duplicate edge. My testing strategy for Junit test is read through all the method stubs and
+their specifications I wrote, think about what are some possible cases that my methods
+will work or fail. They are designed differently, because the script tests are designed for a general
+idea of if my graph are doing what it is supposed do as a graph in a general way.
+Junit test, however, is more like testing if there is a bug on your method design.
+
+
+
+
+
 
 
 

@@ -111,7 +111,7 @@
 
     checkRep will need to remove the if statement because it no longer needs to check if it's in reduced form
     or not.
-    Advantage: Reduce run time by removing the loop from gcd
+    Advantage: Reduce run time by removingm the loop from gcd
     Disadvantage: Since the invariant is weaker, this will decrease clarity in other methods, because
     we need to document more on other method to accomodate this change.
 
