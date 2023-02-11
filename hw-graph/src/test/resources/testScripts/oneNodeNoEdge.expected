@@ -6,7 +6,7 @@
 created graph graph1
 
 # Add a node
-added node n1 to graph 1
+added node n1 to graph1
 
 # Print the nodes in the graph and the outgoing edges from n1
 graph1 contains: n1

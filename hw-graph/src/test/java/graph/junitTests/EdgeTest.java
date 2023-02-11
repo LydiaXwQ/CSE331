@@ -16,17 +16,18 @@ public class EdgeTest {
     private Graph myGraph = new Graph();
 
     //some nodes
-    Graph.Node a = myGraph.new Node("a");
-    Graph.Node a1 = myGraph.new Node("a");
-    Graph.Node b = myGraph.new Node("b");
-    Graph.Node c = myGraph.new Node("c");
-    Graph.Node d = myGraph.new Node("d");
+    Graph.Node a = new Graph.Node("a");
+    Graph.Node a1 = new Graph.Node("a");
+    Graph.Node b = new Graph.Node("b");
+    Graph.Node c = new Graph.Node("c");
+    Graph.Node d = new Graph.Node("d");
 
     //some basic edges
-    Graph.Edge e1 = myGraph.new Edge(a, b, "e1");
-    Graph.Edge e2 = myGraph.new Edge(a, a, "e2");
-    Graph.Edge e3 = myGraph.new Edge(b, c, "e3");
-    Graph.Edge e4 = myGraph.new Edge(a, d, "e1");
+    Graph.Edge e1 = new Graph.Edge(a, b, "e1");
+    Graph.Edge e2 = new Graph.Edge(a, a, "e2");
+    Graph.Edge e3 = new Graph.Edge(b, c, "e3");
+    Graph.Edge e4 = new Graph.Edge(a, d, "e1");
+    Graph.Edge e5 = new Graph.Edge(a, b, "e1");
 
     /**
      * Test if the parent node of the edge can be accessed.
@@ -57,12 +58,13 @@ public class EdgeTest {
     }
 
     /**
-     * Test if two Edges with the same label are the same.
+     * Test two Edges are equal to each other only when they have same parent, child and label.
      */
     @Test
     public void testEqual() {
-        assertTrue(e1.equals(e4));
+        assertFalse(e1.equals(e4));
         assertFalse(e1.equals(e3));
+        assertTrue(e1.equals(e5));
     }
 
     /**
@@ -70,7 +72,7 @@ public class EdgeTest {
      */
     @Test
     public void testHashCode() {
-        assertEquals(e1.hashCode(), e4.hashCode());
+        assertNotEquals(e1.hashCode(), e4.hashCode());
         assertNotEquals(e1.hashCode(), e3.hashCode());
     }
 }

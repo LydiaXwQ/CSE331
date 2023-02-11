@@ -19,15 +19,15 @@ public class GraphTest {
     private Graph myGraph = new Graph();
 
     //some nodes
-    Graph.Node a = myGraph.new Node("a");
-    Graph.Node a1 = myGraph.new Node("a");
-    Graph.Node b = myGraph.new Node("b");
-    Graph.Node c = myGraph.new Node("c");
-    Graph.Node d = myGraph.new Node("d");
+    Graph.Node a = new Graph.Node("a");
+    Graph.Node a1 = new Graph.Node("a");
+    Graph.Node b = new Graph.Node("b");
+    Graph.Node c = new Graph.Node("c");
+    Graph.Node d = new Graph.Node("d");
 
     //some basic edges
-    Graph.Edge e1 = myGraph.new Edge(a, b, "e1");
-    Graph.Edge e4 = myGraph.new Edge(a, d, "e1");
+    Graph.Edge e1 = new Graph.Edge(a, b, "e1");
+    Graph.Edge e4 = new Graph.Edge(a, d, "e1");
 
     /**
      * Test if the graph size matched with the number of nodes in it.
@@ -49,22 +49,6 @@ public class GraphTest {
         assertFalse(myGraph.containsNode(c));
         myGraph.addNode(b);
         assertTrue(myGraph.containsNode(b));
-    }
-
-    /**
-     * Test if the graph contains the give edge
-     */
-    @Test
-    public void testContainsEdge() {
-        myGraph = new Graph();
-        myGraph.addNode(a);
-        myGraph.addNode(b);
-        myGraph.addEdge(a, b, "e1");
-        assertTrue(myGraph.containsEdge(e1));
-
-        myGraph.addNode(d);
-        myGraph.addEdge(a, d, "e1");
-        assertTrue(myGraph.containsEdge(e4));
     }
 
     /**

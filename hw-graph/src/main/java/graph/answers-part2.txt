@@ -17,6 +17,22 @@ A few examples of possible Graph representations:
 representations listed above (for example, in terms of runtime complexity, space
 complexity, or ease of implementation).
 
+A: Advantage: Easier for me to access and modifies nodes and edges separately. For example, if I only want
+              to modify a node, I can only traverse the node list.
+   Disadvantage: It increases space complexity by store nodes and edges separately. It will also have more
+                run time complexity if I want to node and its corresponding edge at the same time by traversing
+                two collections separately.
+
+B: Advantage: It saves memory compares to A's design, and it also shows the relationship between node and its outgoing
+              edge by associating them together. This will make methods like addNode and addEdge easier to implement.
+   Disadvantage: Adds complexity on finding relationship between two nodes. For example, to find which node is the parent
+                node connecting to, I need to traverse all the keys first to find my parentNode, then traverse all
+                its edges to determine which it's pointing to.
+
+C: Advantage: Some method like addEdge will have less time complexity O(1). The relationship
+              between nodes and edges is also clearer.
+   Disadvantage: Cost more space complexity compared to A and B. Also, it is harder to implement,
+                 as it is built on a 2-D nested array.
 
 
 
@@ -24,6 +40,10 @@ complexity, or ease of implementation).
 chose it. If you chose to use a different representation than one of the three we described
 above, be sure to list its advantages and disadvantages, too.
 
+I choose B (adjacent list) by using a HashMap in which the key is the parentNode and the value is the node's
+outgoing edges. I chose this representation because this clearly shows the relationship between the node and its
+outgoing edges, also by using a hashmap, I don't need to worry it will have duplicate nodes which make me easier
+to implement and adhere to my specification.
 
 
 
@@ -35,11 +55,13 @@ above, be sure to list its advantages and disadvantages, too.
 1. Describe any new tests you added and why you added them, or why you feel that your original
 tests alone are sufficient.
 
+I didn't add any new tests because I feel my Junit test can cover most of my edge cases and Script test can
+cover most of the general case.
 
 
 
 2. Did you make any changes to your specifications as you were implementing your Graph? (yes/no)
 If yes, describe your changes and why you made them.
 
-
+No, I didn't change my spec.
 
