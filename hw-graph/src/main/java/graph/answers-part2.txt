@@ -30,7 +30,8 @@ B: Advantage: It saves memory compares to A's design, and it also shows the rela
                 its edges to determine which it's pointing to.
 
 C: Advantage: Some method like addEdge will have less time complexity O(1). The relationship
-              between nodes and edges is also clearer.
+              between nodes and edges is also clearer. For example, I can check out the
+              relationship between two nodes from one element in the matrix.
    Disadvantage: Cost more space complexity compared to A and B. Also, it is harder to implement,
                  as it is built on a 2-D nested array.
 
@@ -58,10 +59,13 @@ tests alone are sufficient.
 I didn't add any new tests because I feel my Junit test can cover most of my edge cases and Script test can
 cover most of the general case.
 
+But I delete the testing of containsEdge, because I found it is unnecessary since I can combine
+it with my addEdge method.
 
 
 2. Did you make any changes to your specifications as you were implementing your Graph? (yes/no)
 If yes, describe your changes and why you made them.
 
-No, I didn't change my spec.
-
+I didn't change my spec other than delete the spec of containsEdge, because I delete
+the containsEdge method. I delete the method because I found I can combine its functionality
+into the addEdge method.
