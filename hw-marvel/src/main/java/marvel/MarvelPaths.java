@@ -8,7 +8,7 @@ import java.util.*;
  * This class represents a directed, labeled graph that models the social network among characters
  * in Marvel comic books.
  * Each node in the graph represents a character, and the edge between two nodes represents the book they share.
- * (i.e Character1 -> Character2 with edge name "SuperHero" meaning Char1 appears in the book "SuperHero"
+ * (i.e Character1 to Character2 with edge name "SuperHero" meaning Char1 appears in the book "SuperHero"
  * that Char2 also appears in, and vice versa).
  */
 public class MarvelPaths {
