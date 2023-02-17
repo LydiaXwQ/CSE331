@@ -1,0 +1,9 @@
+# UWProfessorsCustom.csv is a file made by Rich Chen. This csv file includes UW CSE professors and
+# the courses they've taught/are teaching/will be teaching from 2021-2023.
+
+# Test finding the path when there is only one edge between two nodes
+
+loaded graph prof
+
+path from Wilcox to Grossman:
+Wilcox to Grossman via 341

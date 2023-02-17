@@ -1,0 +1,10 @@
+# UWProfessorsCustom.csv is a file made by Rich Chen. This csv file includes UW CSE professors and
+# the courses they've taught/are teaching/will be teaching from 2021-2023.
+
+# Test when path finding will first traverse the path in childNode's lexicographically order
+
+loaded graph prof
+
+path from Zatloukal to Tessaro:
+Zatloukal to Beame via 311
+Beame to Tessaro via 312

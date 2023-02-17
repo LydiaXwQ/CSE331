@@ -1,3 +1,14 @@
 Briefly list any changes you made to your graph class during hw-marvel,
 and why you made those changes.
 
+I remove my check of "if the pass-in edge already exist in the graph, throws exception"
+in my addEdge method. I did this for two reasons. First, I realize that I don't need this check,
+because my edge container is a set, and set won't have duplicated element which means my edge set
+won't include a duplicate edge in it, even though the edge passing in was duplicate. Second, for the client,
+it will be too hard to find out which edge they put in is duplicated and go back to change it if the
+dataset is very large.
+
+Accordingly, I also change the Junit test for my addEdge method to ensure there won't be duplicate
+edge exist in my graph: I input two identical edge, but my final graph only contains one of them.
+
+

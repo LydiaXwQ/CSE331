@@ -64,13 +64,16 @@ public class GraphTest {
     /**
      * Test the graph doesn't allow duplicate edges
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testAddDuplicateEdge() {
         myGraph = new Graph();
         myGraph.addNode(a);
         myGraph.addNode(b);
         myGraph.addEdge(a, b, "e1");
         myGraph.addEdge(a, b, "e1");
+        Graph.Edge expected = new Graph.Edge(a, b, "e1");
+        assertEquals(myGraph.listChildren(a).size(), 1);
+        assertTrue(myGraph.listChildren(a).contains(expected));
     }
 
     /**

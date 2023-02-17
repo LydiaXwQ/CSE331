@@ -35,8 +35,8 @@ public class Graph {
 
     // Throws an exception if the representation invariant is violated.
     private void checkRep() {
-            assert (graph != null) : "graph cannot be null!";
-            Set<Graph.Node> nodes = graph.keySet();
+        assert (graph != null) : "graph cannot be null!";
+        Set<Graph.Node> nodes = graph.keySet();
         if (DEBUG) {
             for (Node n : nodes) {
                 assert (n != null) : "Node cannot be null";
@@ -92,9 +92,7 @@ public class Graph {
      * @param label the label of the edge
      * @spec.modifies this
      * @spec.effects add the edge with the given parent node, child node and label to this graph.
-     * @throws IllegalArgumentException if the Edge to be added already exist in the graph.
-     * (i.e there exist an Edge in graph that has the same parent, child and label as the given),
-     * or parentNode or childNode didn't already exist in the graph.
+     * @throws IllegalArgumentException if added Edge's parentNode or childNode didn't already exist in the graph.
      * @spec.requires parent != null, child != null, label != null.
      */
     public void addEdge(Node parent, Node child, String label) {
@@ -106,9 +104,9 @@ public class Graph {
         Set<Edge> fromParent = graph.get(parent);
         Edge edge = new Edge(parent, child, label);
 
-        if (fromParent.contains(edge)) {
-            throw new IllegalArgumentException("Edge to be added already exist in the graph!");
-        }
+//        if (fromParent.contains(edge)) {
+//            throw new IllegalArgumentException("Edge to be added already exist in the graph!");
+//        }
 
         fromParent.add(edge);
         checkRep();
@@ -131,7 +129,7 @@ public class Graph {
      */
     public Set<Node> listNodes() {
         checkRep();
-        return new HashSet<>(graph.keySet());
+        return Collections.unmodifiableSet(graph.keySet());
     }
 
     /**
@@ -147,7 +145,7 @@ public class Graph {
             return new HashSet<>();
         }
         checkRep();
-        return new HashSet<>(graph.get(n));
+        return Collections.unmodifiableSet(graph.get(n));
     }
 
     /**
@@ -173,9 +171,7 @@ public class Graph {
         private final String data;
 
         private void checkRep() {
-            if (DEBUG) {
-                assert (this.data != null): "Node data cannot be null";
-            }
+            assert (this.data != null): "Node data cannot be null";
         }
         /**
          * Construct a new Node.
