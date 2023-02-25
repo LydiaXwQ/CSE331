@@ -16,25 +16,25 @@ public class GraphTest {
     public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
 
     //this graph
-    private Graph myGraph = new Graph();
+    private Graph<String, String> myGraph = new Graph<>();
 
     //some nodes
-    Graph.Node a = new Graph.Node("a");
-    Graph.Node a1 = new Graph.Node("a");
-    Graph.Node b = new Graph.Node("b");
-    Graph.Node c = new Graph.Node("c");
-    Graph.Node d = new Graph.Node("d");
+    Graph.Node<String> a = new Graph.Node<>("a");
+    Graph.Node<String> a1 = new Graph.Node<>("a");
+    Graph.Node<String> b = new Graph.Node<>("b");
+    Graph.Node<String> c = new Graph.Node<>("c");
+    Graph.Node<String> d = new Graph.Node<>("d");
 
     //some basic edges
-    Graph.Edge e1 = new Graph.Edge(a, b, "e1");
-    Graph.Edge e4 = new Graph.Edge(a, d, "e1");
+    Graph.Edge<String, String> e1 = new Graph.Edge<>(a, b, "e1");
+    Graph.Edge<String, String> e4 = new Graph.Edge<>(a, d, "e1");
 
     /**
      * Test if the graph size matched with the number of nodes in it.
      */
     @Test
     public void testSize() {
-        myGraph = new Graph();
+        myGraph = new Graph<>();
         assertEquals(myGraph.size(), 0);
         myGraph.addNode(a);
         assertEquals(myGraph.size(), 1);
@@ -45,7 +45,7 @@ public class GraphTest {
      */
     @Test
     public void testContainsNode() {
-        myGraph = new Graph();
+        myGraph = new Graph<>();
         assertFalse(myGraph.containsNode(c));
         myGraph.addNode(b);
         assertTrue(myGraph.containsNode(b));
@@ -54,11 +54,13 @@ public class GraphTest {
     /**
      * Test the graph doesn't allow duplicate nodes
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testAddDuplicateNode() {
-        myGraph = new Graph();
+        myGraph = new Graph<>();
         myGraph.addNode(a);
         myGraph.addNode(a1);
+        assertEquals(myGraph.size(), 1);
+        assertTrue(myGraph.containsNode(a));
     }
 
     /**
@@ -66,12 +68,12 @@ public class GraphTest {
      */
     @Test
     public void testAddDuplicateEdge() {
-        myGraph = new Graph();
+        myGraph = new Graph<>();
         myGraph.addNode(a);
         myGraph.addNode(b);
         myGraph.addEdge(a, b, "e1");
         myGraph.addEdge(a, b, "e1");
-        Graph.Edge expected = new Graph.Edge(a, b, "e1");
+        Graph.Edge<String, String> expected = new Graph.Edge<>(a, b, "e1");
         assertEquals(myGraph.listChildren(a).size(), 1);
         assertTrue(myGraph.listChildren(a).contains(expected));
     }
@@ -81,7 +83,7 @@ public class GraphTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testNoParent() {
-        myGraph = new Graph();
+        myGraph = new Graph<>();
         myGraph.addNode(b);
         myGraph.addEdge(a, b, "ab");
     }
@@ -91,7 +93,7 @@ public class GraphTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testNoChildren() {
-        myGraph = new Graph();
+        myGraph = new Graph<>();
         myGraph.addNode(a);
         myGraph.addEdge(a, b, "ab");
     }
@@ -101,8 +103,8 @@ public class GraphTest {
      */
     @Test
     public void testListChildrenGivenNotExist() {
-        myGraph = new Graph();
-        Set<Graph.Edge> edgesFrom = new HashSet<>();
+        myGraph = new Graph<>();
+        Set<Graph.Edge<String, String>> edgesFrom = new HashSet<>();
         myGraph.addNode(a);
         assertEquals(myGraph.listChildren(b), edgesFrom);
     }
@@ -112,8 +114,8 @@ public class GraphTest {
      */
     @Test
     public void testListChildrenGivenNoEdge() {
-        myGraph = new Graph();
-        Set<Graph.Edge> edgesFrom = new HashSet<>();
+        myGraph = new Graph<>();
+        Set<Graph.Edge<String, String>> edgesFrom = new HashSet<>();
         myGraph.addNode(a);
         assertEquals(myGraph.listChildren(a), edgesFrom);
     }
@@ -123,8 +125,8 @@ public class GraphTest {
      */
     @Test
     public void testListNodeEmpty() {
-        myGraph = new Graph();
-        Set<Graph.Node> expected = new HashSet<>();
+        myGraph = new Graph<>();
+        Set<Graph.Node<String>> expected = new HashSet<>();
         assertEquals(myGraph.listNodes(), expected);
     }
 }

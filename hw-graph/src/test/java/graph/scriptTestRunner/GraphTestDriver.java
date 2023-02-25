@@ -16,8 +16,6 @@ import graph.Graph;
 import java.io.*;
 import java.util.*;
 
-import graph.Graph;
-
 /**
  * This class implements a testing driver which reads test scripts
  * from files for testing Graph.
@@ -32,7 +30,7 @@ public class GraphTestDriver {
      * String -> Graph: maps the names of graphs to the actual graph
      **/
     // TODO for the student: Uncomment and parameterize the next line correctly:
-    private final Map<String, Graph> graphs = new HashMap<String, Graph>();
+    private final Map<String, Graph<String, String>> graphs = new HashMap<>();
     private final PrintWriter output;
     private final BufferedReader input;
 
@@ -117,7 +115,7 @@ public class GraphTestDriver {
     }
 
     private void createGraph(String graphName) {
-        graphs.put(graphName, new Graph());
+        graphs.put(graphName, new Graph<>());
         output.println("created graph " + graphName);
     }
 
@@ -133,8 +131,8 @@ public class GraphTestDriver {
     }
 
     private void addNode(String graphName, String nodeName) {
-        Graph.Node n = new Graph.Node(nodeName);
-        Graph g  = graphs.get(graphName);
+        Graph.Node<String> n = new Graph.Node<>(nodeName);
+        Graph<String, String> g  = graphs.get(graphName);
         g.addNode(n);
         output.println("added node " + nodeName + " to " + graphName);
     }
@@ -155,9 +153,9 @@ public class GraphTestDriver {
     private void addEdge(String graphName, String parentName, String childName,
                          String edgeLabel) {
 
-        Graph g = graphs.get(graphName);
-        Graph.Node parent = new Graph.Node(parentName);
-        Graph.Node children = new Graph.Node(childName);
+        Graph<String, String> g = graphs.get(graphName);
+        Graph.Node<String> parent = new Graph.Node<>(parentName);
+        Graph.Node<String> children = new Graph.Node<>(childName);
         g.addEdge(parent, children, edgeLabel);
         output.println("added edge " + edgeLabel + " from " + parentName + " to "
                 + childName + " in " + graphName);
@@ -173,10 +171,10 @@ public class GraphTestDriver {
     }
 
     private void listNodes(String graphName) {
-        Graph g = graphs.get(graphName);
-        Set<Graph.Node> nodeSet = g.listNodes();
+        Graph<String, String> g = graphs.get(graphName);
+        Set<Graph.Node<String>> nodeSet = g.listNodes();
         List<String> nodeList = new ArrayList<>();
-        for (Graph.Node n : nodeSet) {
+        for (Graph.Node<String> n : nodeSet) {
             nodeList.add(n.getData());
         }
         Collections.sort(nodeList);
@@ -199,11 +197,11 @@ public class GraphTestDriver {
 
     private void listChildren(String graphName, String parentName) {
         // TODO Insert your code here.
-        Graph g = graphs.get(graphName);
-        Graph.Node parentNode = new Graph.Node(parentName);
-        Set<Graph.Edge> childEdge = g.listChildren(parentNode);
+        Graph<String, String> g = graphs.get(graphName);
+        Graph.Node<String> parentNode = new Graph.Node<>(parentName);
+        Set<Graph.Edge<String, String>> childEdge = g.listChildren(parentNode);
         List<String> edgeNames = new ArrayList<>();
-        for (Graph.Edge e : childEdge) {
+        for (Graph.Edge<String, String> e : childEdge) {
             edgeNames.add(e.getChild().getData() + "(" + e.getLabel() + ")");
         }
         StringBuilder myOutput = new StringBuilder();

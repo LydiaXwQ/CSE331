@@ -1,0 +1,12 @@
+# Find a path with Dijkstra's algorithm when
+# a given node is not in the graph.
+
+CreateGraph simpleGraph
+
+AddNode simpleGraph A
+AddNode simpleGraph B
+
+AddEdge simpleGraph A B 10.0
+
+FindPath simpleGraph A B
+FindPath simpleGraph B D

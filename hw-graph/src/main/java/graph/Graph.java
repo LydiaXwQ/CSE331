@@ -7,8 +7,9 @@ import java.util.*;
  * A Graph allows to have multiple edges between two different nodes, and node points to itself,
  * but a graph can't have duplicate edges or nodes. (Ex. No two edges have same parent and child nodes
  * have the same label, and no two nodes share the same label.)
+ * D is the node type and L is the Edge Label type.
  */
-public class Graph {
+public class Graph<D, L> {
 
     // Abstract Function:
     // Graph stores pairs of Parent Node and the outgoing Edges from that Node.
@@ -31,18 +32,18 @@ public class Graph {
     private final static boolean DEBUG = false;
 
     // The holder of nodes and corresponding edges, which represents the graph
-    private Map<Node, Set<Edge>> graph;
+    private Map<Node<D>, Set<Edge<D, L>>> graph;
 
     // Throws an exception if the representation invariant is violated.
     private void checkRep() {
         assert (graph != null) : "graph cannot be null!";
-        Set<Graph.Node> nodes = graph.keySet();
+        Set<Graph.Node<D>> nodes = graph.keySet();
         if (DEBUG) {
-            for (Node n : nodes) {
+            for (Node<D> n : nodes) {
                 assert (n != null) : "Node cannot be null";
-                Set<Graph.Edge> edgeSet = graph.get(n);
-                Set<Graph.Edge> visitedEdge = new HashSet<>();
-                for(Graph.Edge e : edgeSet) {
+                Set<Graph.Edge<D, L>> edgeSet = graph.get(n);
+                Set<Graph.Edge<D, L>> visitedEdge = new HashSet<>();
+                for(Graph.Edge<D, L> e : edgeSet) {
                     assert (e != null) : "Edge cannot be null";
                     assert (graph.containsKey(e.getParent())) : "Parent node must exist before Edge was added";
                     assert (graph.containsKey(e.getChild())) : "Child node must exist before Edge was added";
@@ -69,16 +70,10 @@ public class Graph {
      * @spec.modifies this
      * @spec.effects add the given node to this graph.
      * @spec.requires n != null
-     * @throws IllegalArgumentException if the node already exist in the graph.
-     * (i.e graph already contains a node with name same as the given node).
      */
-    public void addNode(Node n) {
+    public void addNode(Node<D> n) {
         checkRep();
-        if (graph.containsKey(n)) {
-            throw new IllegalArgumentException("Node to be added already exist!");
-        }
-
-        if (n != null) {
+        if (!graph.containsKey(n) && n != null) {
             graph.put(n, new HashSet<>());
         }
         checkRep();
@@ -95,14 +90,14 @@ public class Graph {
      * @throws IllegalArgumentException if added Edge's parentNode or childNode didn't already exist in the graph.
      * @spec.requires parent != null, child != null, label != null.
      */
-    public void addEdge(Node parent, Node child, String label) {
+    public void addEdge(Node<D> parent, Node<D> child, L label) {
         checkRep();
         if (!containsNode(parent) || !containsNode(child)) {
             throw new IllegalArgumentException("Parent and Child must have existed!");
         }
 
-        Set<Edge> fromParent = graph.get(parent);
-        Edge edge = new Edge(parent, child, label);
+        Set<Edge<D, L>> fromParent = graph.get(parent);
+        Edge<D, L> edge = new Edge<>(parent, child, label);
 
 //        if (fromParent.contains(edge)) {
 //            throw new IllegalArgumentException("Edge to be added already exist in the graph!");
@@ -118,7 +113,7 @@ public class Graph {
      * @return true if the given node is in the Graph, false otherwise.
      * @spec.requires n != null
      */
-    public boolean containsNode(Node n) {
+    public boolean containsNode(Node<D> n) {
         checkRep();
         return graph.containsKey(n);
     }
@@ -127,7 +122,7 @@ public class Graph {
      * Returns a set of all Nodes from this Graph.
      * @return set of Nodes in the Graph. If there are no nodes in the graph, return an empty set.
      */
-    public Set<Node> listNodes() {
+    public Set<Node<D>> listNodes() {
         checkRep();
         return Collections.unmodifiableSet(graph.keySet());
     }
@@ -139,7 +134,7 @@ public class Graph {
      *         if the node doesn't exist in Graph or has no edges, return an empty set.
      * @spec.requires n != null
      */
-    public Set<Edge> listChildren(Node n) {
+    public Set<Edge<D,L>> listChildren(Node<D> n) {
         checkRep();
         if(!graph.containsKey(n) || graph.get(n).isEmpty()) {
             return new HashSet<>();
@@ -161,14 +156,14 @@ public class Graph {
      * <b>Node</b> represents an immutable Node in the Graph.
      * Each Node can store some data in it.
      */
-    public static class Node {
+    public static class Node<D> {
         //Abstract Function:
         //A Node represent a Node in Graph
         //Node's data is Node's label
 
         //Abstract inv:
         //Node's data can never be null
-        private final String data;
+        private final D data;
 
         private void checkRep() {
             assert (this.data != null): "Node data cannot be null";
@@ -179,7 +174,7 @@ public class Graph {
          * @spec.effects Construct a new Node that stores Node data.
          * @spec.requires data != null
          */
-        public Node(String data) {
+        public Node(D data) {
             this.data = data;
             checkRep();
         }
@@ -189,7 +184,7 @@ public class Graph {
          * @return the data stored in the Node
          * @spec.requires this != null
          */
-        public String getData() {
+        public D getData() {
             checkRep();
             return this.data;
         }
@@ -207,7 +202,7 @@ public class Graph {
             if (!(o instanceof Node)) {
                 return false;
             }
-            Node n = (Node) o;
+            Node<?> n = (Node<?>) o;
             return this.data.equals(n.data);
         }
 
@@ -227,7 +222,7 @@ public class Graph {
      * An Edge is a one-way directed Edge, meaning
      * it points from start, points to end, and marked by a label, l.
      */
-    public static class Edge {
+    public static class Edge<D, L> {
         // Abstract Function:
         // start represents the parent node where the edge points from
         // end represents the child node where the edge points to
@@ -236,9 +231,9 @@ public class Graph {
         // Rep Inv:
         // start != null, end != null, l != null
 
-        private final Node start;
-        private final Node end;
-        private final String l;
+        private final Node<D> start;
+        private final Node<D> end;
+        private final L l;
 
         private void checkRep() {
             if (DEBUG) {
@@ -256,7 +251,7 @@ public class Graph {
          * @spec.requires start != null, end != null, label != null
          * @spec.effects Construct a new Edge with the node from start, destination end, and label l
          */
-        public Edge(Node start, Node end, String l) {
+        public Edge(Node<D> start, Node<D> end, L l) {
             this.start = start;
             this.end = end;
             this.l = l;
@@ -268,7 +263,7 @@ public class Graph {
          * @return the parent Node of this Edge.
          * @spec.requires this != null
          */
-        public Node getParent() {
+        public Node<D> getParent() {
             checkRep();
             return this.start;
         }
@@ -278,7 +273,7 @@ public class Graph {
          * @return the child Node of this Edge.
          * @spec.requires this != null
          */
-        public Node getChild() {
+        public Node<D> getChild() {
             checkRep();
             return this.end;
         }
@@ -289,7 +284,7 @@ public class Graph {
          * @return the label of this Edge.
          * @spec.requires this != null
          */
-        public String getLabel() {
+        public L getLabel() {
             checkRep();
             return l;
         }
@@ -307,7 +302,7 @@ public class Graph {
             if (!(o instanceof Edge)) {
                 return false;
             }
-            Edge e = (Edge) o;
+            Edge<?, ?> e = (Edge<?, ?>) o;
             return this.start.equals(e.start) && this.end.equals(e.end) && this.l.equals(e.l);
         }
 

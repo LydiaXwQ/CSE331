@@ -1,3 +1,10 @@
 Briefly list any changes you made to your graph class during hw-pathfinder,
 and why you made those changes.
 
+I delete the throws exception in addNode method, and adjust the Junit test accordingly. Since I found this will
+block me from entering in the node multiple times if I want to search it for multiple time.
+And by using a hashmap, I also don't need to worry my graph will have duplicate node, since the key of hashmap cannot be duplicated.
+
+I tested my assumption of can't have duplicate nodes on hash map in Junit Test. By adding two nodes
+with the same data, I checked if there's only one node exist in graph and if that node was the on I added
+the first time (since the same node added the second time shouldn't be added to my graph).

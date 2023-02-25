@@ -16,9 +16,9 @@ public final class NodeTest {
     private Graph myGraph = new Graph();
 
     //some simple basic nodes
-    Graph.Node a = new Graph.Node("a");
-    Graph.Node a1 = new Graph.Node("a");
-    Graph.Node b = new Graph.Node("b");
+    Graph.Node<String> a = new Graph.Node<>("a");
+    Graph.Node<String> a1 = new Graph.Node<>("a");
+    Graph.Node<String> b = new Graph.Node<>("b");
 
     /**
      * Test if the data stored in Node is the same as its created.

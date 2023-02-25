@@ -23,7 +23,7 @@ import java.util.*;
  */
 public class MarvelTestDriver {
 
-    private final Map<String, Graph> graphs = new HashMap<String, Graph>();
+    private final Map<String, Graph<String, String>> graphs = new HashMap<>();
     private final PrintWriter output;
     private final BufferedReader input;
 
@@ -105,7 +105,7 @@ public class MarvelTestDriver {
     }
 
     private void createGraph(String graphName) {
-        graphs.put(graphName, new Graph());
+        graphs.put(graphName, new Graph<>());
         output.println("created graph " + graphName);
     }
 
@@ -121,8 +121,8 @@ public class MarvelTestDriver {
     }
 
     private void addNode(String graphName, String nodeName) {
-        Graph.Node n = new Graph.Node(nodeName);
-        Graph g  = graphs.get(graphName);
+        Graph.Node<String> n = new Graph.Node<>(nodeName);
+        Graph<String, String> g  = graphs.get(graphName);
         g.addNode(n);
         output.println("added node " + nodeName + " to " + graphName);
     }
@@ -143,9 +143,9 @@ public class MarvelTestDriver {
     private void addEdge(String graphName, String parentName, String childName,
                          String edgeLabel) {
 
-        Graph g = graphs.get(graphName);
-        Graph.Node parent = new Graph.Node(parentName);
-        Graph.Node children = new Graph.Node(childName);
+        Graph<String, String> g = graphs.get(graphName);
+        Graph.Node<String> parent = new Graph.Node<>(parentName);
+        Graph.Node<String> children = new Graph.Node<>(childName);
         g.addEdge(parent, children, edgeLabel);
         output.println("added edge " + edgeLabel + " from " + parentName + " to "
                 + childName + " in " + graphName);
@@ -161,10 +161,10 @@ public class MarvelTestDriver {
     }
 
     private void listNodes(String graphName) {
-        Graph g = graphs.get(graphName);
-        Set<Graph.Node> nodeSet = g.listNodes();
+        Graph<String, String> g = graphs.get(graphName);
+        Set<Graph.Node<String>> nodeSet = g.listNodes();
         List<String> nodeList = new ArrayList<>();
-        for (Graph.Node n : nodeSet) {
+        for (Graph.Node<String> n : nodeSet) {
             nodeList.add(n.getData());
         }
         Collections.sort(nodeList);
@@ -186,11 +186,11 @@ public class MarvelTestDriver {
     }
 
     private void listChildren(String graphName, String parentName) {
-        Graph g = graphs.get(graphName);
-        Graph.Node parentNode = new Graph.Node(parentName);
-        Set<Graph.Edge> childEdge = g.listChildren(parentNode);
+        Graph<String, String> g = graphs.get(graphName);
+        Graph.Node<String> parentNode = new Graph.Node<>(parentName);
+        Set<Graph.Edge<String, String>> childEdge = g.listChildren(parentNode);
         List<String> edgeNames = new ArrayList<>();
-        for (Graph.Edge e : childEdge) {
+        for (Graph.Edge<String, String> e : childEdge) {
             edgeNames.add(e.getChild().getData() + "(" + e.getLabel() + ")");
         }
         StringBuilder myOutput = new StringBuilder();
@@ -214,9 +214,9 @@ public class MarvelTestDriver {
     }
 
     private void findPath(String graphName, String parentName, String childName) {
-        Graph graph = graphs.get(graphName);
-        Graph.Node parent = new Graph.Node(parentName);
-        Graph.Node child = new Graph.Node(childName);
+        Graph<String, String> graph = graphs.get(graphName);
+        Graph.Node<String> parent = new Graph.Node<>(parentName);
+        Graph.Node<String> child = new Graph.Node<>(childName);
 
         if (!graph.containsNode(parent) && !graph.containsNode(child)) {
             output.println("unknown: " + parentName);
@@ -227,11 +227,11 @@ public class MarvelTestDriver {
             output.println("unknown: " + childName);
         } else {
             output.println("path from " + parentName + " to " + childName + ":");
-            List<Graph.Edge> shortestPaths = MarvelPaths.findShortestPath(parent, child, graph);
+            List<Graph.Edge<String, String>> shortestPaths = MarvelPaths.findShortestPath(parent, child, graph);
             if (shortestPaths == null) {
                 output.println("no path found");
             } else {
-                for (Graph.Edge e : shortestPaths) {
+                for (Graph.Edge<String, String> e : shortestPaths) {
                     output.println(e.getParent().getData() + " to " + e.getChild().getData() + " via " + e.getLabel());
                 }
             }
@@ -249,7 +249,7 @@ public class MarvelTestDriver {
     }
 
     private void loadGraph(String graphName, String fileName) {
-        Graph graph = MarvelPaths.buildGraph(fileName);
+        Graph<String, String> graph = MarvelPaths.buildGraph(fileName);
         graphs.put(graphName, graph);
         output.println("loaded graph " + graphName);
     }

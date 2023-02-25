@@ -16,18 +16,18 @@ public class EdgeTest {
     private Graph myGraph = new Graph();
 
     //some nodes
-    Graph.Node a = new Graph.Node("a");
-    Graph.Node a1 = new Graph.Node("a");
-    Graph.Node b = new Graph.Node("b");
-    Graph.Node c = new Graph.Node("c");
-    Graph.Node d = new Graph.Node("d");
+    Graph.Node<String> a = new Graph.Node<>("a");
+    Graph.Node<String> a1 = new Graph.Node<>("a");
+    Graph.Node<String> b = new Graph.Node<>("b");
+    Graph.Node<String> c = new Graph.Node<>("c");
+    Graph.Node<String> d = new Graph.Node<>("d");
 
     //some basic edges
-    Graph.Edge e1 = new Graph.Edge(a, b, "e1");
-    Graph.Edge e2 = new Graph.Edge(a, a, "e2");
-    Graph.Edge e3 = new Graph.Edge(b, c, "e3");
-    Graph.Edge e4 = new Graph.Edge(a, d, "e1");
-    Graph.Edge e5 = new Graph.Edge(a, b, "e1");
+    Graph.Edge<String, String> e1 = new Graph.Edge<>(a, b, "e1");
+    Graph.Edge<String, String> e2 = new Graph.Edge<>(a, a, "e2");
+    Graph.Edge<String, String> e3 = new Graph.Edge<>(b, c, "e3");
+    Graph.Edge<String, String> e4 = new Graph.Edge<>(a, d, "e1");
+    Graph.Edge<String, String> e5 = new Graph.Edge<>(a, b, "e1");
 
     /**
      * Test if the parent node of the edge can be accessed.

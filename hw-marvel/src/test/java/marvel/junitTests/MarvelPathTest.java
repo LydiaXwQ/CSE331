@@ -15,7 +15,7 @@ public class MarvelPathTest {
     public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
 
     //this graph
-    private Graph graph;
+    private Graph<String, String> graph;
     @Before
     public void setUp() throws Exception {
         graph = MarvelPaths.buildGraph("UWProfessorsCustom.csv");
@@ -34,8 +34,8 @@ public class MarvelPathTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testPathFindingOnNullGraph() {
-        Graph.Node start = new Graph.Node("Schafer");
-        Graph.Node end = new Graph.Node("Ri.Anderson");
+        Graph.Node<String> start = new Graph.Node<>("Schafer");
+        Graph.Node<String> end = new Graph.Node<>("Ri.Anderson");
         MarvelPaths.findShortestPath(start, end, null);
     }
 
@@ -44,7 +44,7 @@ public class MarvelPathTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testPathFindingOnNullStart() {
-        Graph.Node end = new Graph.Node("Ri.Anderson");
+        Graph.Node<String> end = new Graph.Node<>("Ri.Anderson");
         MarvelPaths.findShortestPath(null, end, graph);
     }
 
@@ -53,7 +53,7 @@ public class MarvelPathTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testPathFindingOnNullEnd() {
-        Graph.Node start = new Graph.Node("Ri.Anderson");
+        Graph.Node<String> start = new Graph.Node<>("Ri.Anderson");
         MarvelPaths.findShortestPath(start, null, graph);
     }
 }

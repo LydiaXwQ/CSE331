@@ -22,8 +22,8 @@ public class MarvelPaths {
      *         return empty graph if the graph is empty.
      * @throws IllegalArgumentException if the fileName is null.
      */
-    public static Graph buildGraph(String fileName) {
-        Graph graph = new Graph();
+    public static Graph<String, String> buildGraph(String fileName) {
+        Graph<String,String> graph = new Graph<>();
         if (fileName == null) {
             throw new IllegalArgumentException("File name cannot be null.");
         }
@@ -32,15 +32,15 @@ public class MarvelPaths {
         for (String bookName : container.keySet()) {
             ArrayList<String> character = container.get(bookName);
             for (String s : character) {
-                Graph.Node node = new Graph.Node(s);
+                Graph.Node<String> node = new Graph.Node<>(s);
                 if (!graph.containsNode(node)) {
                     graph.addNode(node);
                 }
             }
             for (int i = 0; i < character.size(); i++) {
                 for (int j = i + 1; j < character.size(); j++) {
-                    graph.addEdge(new Graph.Node(character.get(i)), new Graph.Node(character.get(j)), bookName);
-                    graph.addEdge(new Graph.Node(character.get(j)), new Graph.Node(character.get(i)), bookName);
+                    graph.addEdge(new Graph.Node<>(character.get(i)), new Graph.Node<>(character.get(j)), bookName);
+                    graph.addEdge(new Graph.Node<>(character.get(j)), new Graph.Node<>(character.get(i)), bookName);
                 }
             }
         }
@@ -57,7 +57,7 @@ public class MarvelPaths {
      * @throws  IllegalArgumentException if the given starting or ending or the graph is null, or node to be
      * finding paths on doesn't exist in the graph.
      */
-    public static ArrayList<Graph.Edge> findShortestPath(Graph.Node starting, Graph.Node ending, Graph graph) {
+    public static ArrayList<Graph.Edge<String, String>> findShortestPath(Graph.Node<String> starting, Graph.Node<String> ending, Graph<String, String> graph) {
         if (starting == null || ending == null || graph == null) {
             throw new IllegalArgumentException("starting/ending/graph cannot be null");
         }
@@ -65,25 +65,25 @@ public class MarvelPaths {
         if (!graph.containsNode(starting) || !graph.containsNode(ending)) {
             throw new IllegalArgumentException("node must exist before finding the path");
         }
-        Graph.Node start = starting;
-        Graph.Node dest = ending;
-        Queue<Graph.Node> queue = new LinkedList<Graph.Node>();
-        Map<Graph.Node, ArrayList<Graph.Edge>> map = new HashMap<>();
+        Graph.Node<String> start = starting;
+        Graph.Node<String> dest = ending;
+        Queue<Graph.Node<String>> queue = new LinkedList<>();
+        Map<Graph.Node<String>, ArrayList<Graph.Edge<String, String>>> map = new HashMap<>();
 
         queue.add(start);
-        map.put(start, new ArrayList<Graph.Edge>());
+        map.put(start, new ArrayList<>());
         while (!queue.isEmpty()) {
-            Graph.Node parent = queue.remove();
+            Graph.Node<String> parent = queue.remove();
             if (parent.equals(dest)) {
                 return map.get(parent);
             }
 
-            Set<Graph.Edge> sortedListChildren = new TreeSet<Graph.Edge>(new edgeComparator());
+            Set<Graph.Edge<String, String>> sortedListChildren = new TreeSet<>(new edgeComparator());
             sortedListChildren.addAll(graph.listChildren(parent));
-            for (Graph.Edge e : sortedListChildren) {
-                Graph.Node child = e.getChild();
+            for (Graph.Edge<String, String> e : sortedListChildren) {
+                Graph.Node<String> child = e.getChild();
                 if (!map.containsKey(child)) {
-                    ArrayList<Graph.Edge> parentPath = new ArrayList<>(map.get(parent)); //no rep exposure
+                    ArrayList<Graph.Edge<String, String>> parentPath = new ArrayList<>(map.get(parent)); //no rep exposure
                     map.put(child, parentPath);
                     map.get(child).add(e);
                     queue.add(child);
@@ -102,16 +102,16 @@ public class MarvelPaths {
      * returns positive if it is greater lexicographical in label. Returns 0 when two edges are same in both
      * child's name and edge label.
      */
-    private static class edgeComparator implements Comparator<Graph.Edge> {
+    private static class edgeComparator implements Comparator<Graph.Edge<String, String>> {
         /**
          * compare two edges based on their child nodes and labels lexicographically.
          * @param e1 the first edge to be compared.
          * @param e2 the second edge to be compared.
          * @return a negative integer, zero,or a positive integer as the first edge is lexicographically less than,
-         * equal to, or greater than the second.
+         * equal to, or greater than the second.x
          */
         @Override
-        public int compare(Graph.Edge e1, Graph.Edge e2) {
+        public int compare(Graph.Edge<String, String> e1, Graph.Edge<String, String> e2) {
             //compare child node, if they are different, sort in increasing order
             if (!e1.getChild().equals(e2.getChild())) {
                 return e1.getChild().getData().compareTo(e2.getChild().getData());
@@ -128,7 +128,7 @@ public class MarvelPaths {
      * @param args an array of command-line arguments for the application
      */
     public static void main(String[] args) {
-        Graph graph = buildGraph("marvel.csv");
+        Graph<String, String> graph = buildGraph("marvel.csv");
         Scanner input = new Scanner(System.in);
         System.out.println("Welcome to the Marvel Path finder!");
         System.out.println("Here I can help you to find the shortest relationship between two characters " +
@@ -142,8 +142,8 @@ public class MarvelPaths {
             String first = input.nextLine();
             System.out.print("Now enter your second character: ");
             String second = input.nextLine();
-            Graph.Node parent = new Graph.Node(first);
-            Graph.Node child = new Graph.Node(second);
+            Graph.Node<String> parent = new Graph.Node<>(first);
+            Graph.Node<String> child = new Graph.Node<>(second);
             if (!graph.containsNode(parent) && !graph.containsNode(child)) {
                 System.out.println("Both characters you entered doesn't exist in the marvel universe!");
             } else if (!graph.containsNode(parent)) {
@@ -152,11 +152,11 @@ public class MarvelPaths {
                 System.out.println("The second character you entered doesn't exist in the marvel universe!");
             } else {
                 System.out.println("path from " + first + " to " + second + ":");
-                List<Graph.Edge> shortestPaths = MarvelPaths.findShortestPath(parent, child, graph);
+                List<Graph.Edge<String, String>> shortestPaths = MarvelPaths.findShortestPath(parent, child, graph);
                 if (shortestPaths == null) {
                     System.out.println("no path found");
                 } else {
-                    for (Graph.Edge e : shortestPaths) {
+                    for (Graph.Edge<String, String> e : shortestPaths) {
                         System.out.println(e.getParent().getData() + " -> " + e.getChild().getData() + " in book of " + e.getLabel());
                     }
                 }
