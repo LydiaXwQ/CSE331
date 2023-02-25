@@ -24,44 +24,74 @@ import java.util.*;
  * two buildings and help them find the shortest path between those two buildings.
  */
 public class CampusMap implements ModelAPI {
-    List<CampusBuilding> buildings;
-    List<CampusPath> paths;
-    Graph<Point, Double> campusMap;
-    Map<String, String> names;
+
+    //Abstract Function:
+    //buildings is a list that represent all the buildings in the University of Washington with the short name, long name
+    //and the coordinate of the building.
+    //campusMap is a graph represent the map of University of Washington. The edges are the paths between
+    //two buildings, and the node are the coordinate point of the building.
+
+    //Rep invariant:
+    //buildings != null
+    //campusMap != null
+    //all entities of buildings cannot be null, including short names/long names/ and coordinates cannot be null.
+    //the distance between two buildings (the distance between two nodes) should be non-negative.
+
+    List<CampusBuilding> buildings = CampusPathsParser.parseCampusBuildings("campus_buildings.csv");;
+    List<CampusPath> paths = CampusPathsParser.parseCampusPaths("campus_paths.csv");
+    Graph<Point, Double> campusMap = new Graph<>();;
+    Map<String, String> names = new HashMap<>();
+    public static final boolean DEBUG = false;
+
 
     /**
      * Construct a campus map using the buildings' name and path data from the given file
      */
     public CampusMap() {
-        buildings = CampusPathsParser.parseCampusBuildings("campus_buildings.csv");
-        paths = CampusPathsParser.parseCampusPaths("campus_paths.csv");
-        names = new HashMap<>();
         for (CampusBuilding building : buildings) {
             names.put(building.getShortName(), building.getLongName());
         }
-        campusMap = new Graph<>();
+        checkRep();
     }
 
     @Override
     public boolean shortNameExists(String shortName) {
+        checkRep();
         return names.containsKey(shortName);
+    }
+
+    public void checkRep() {
+        assert (this.campusMap != null);
+        assert (this.names != null);
+        if (DEBUG) {
+            assert (!buildings.contains(null));
+            for (Graph.Node<Point> node : campusMap.listNodes()) {
+                for (Graph.Edge<Point, Double> edge : campusMap.listChildren(node)) {
+                    assert (edge.getLabel() >= 0.0);
+                }
+            }
+        }
     }
 
     @Override
     public String longNameForShort(String shortName) {
+        checkRep();
         if(!names.containsKey(shortName)) {
             throw new IllegalArgumentException("The short name provided doesn't exist");
         }
+        checkRep();
         return names.get(shortName);
     }
 
     @Override
     public Map<String, String> buildingNames() {
+        checkRep();
         return new HashMap<>(names);
     }
 
     @Override
     public Path<Point> findShortestPath(String startShortName, String endShortName) {
+        checkRep();
         if (startShortName == null || endShortName == null) {
             throw new IllegalArgumentException();
         }
@@ -88,6 +118,7 @@ public class CampusMap implements ModelAPI {
                 endPoint = new Point(building.getX(), building.getY());
             }
         }
+        checkRep();
         return DijkstrasAlgorithm.dijkstraPath(startPoint, endPoint, campusMap);
     }
 }
