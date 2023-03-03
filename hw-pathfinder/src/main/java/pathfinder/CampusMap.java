@@ -51,6 +51,14 @@ public class CampusMap implements ModelAPI {
         for (CampusBuilding building : buildings) {
             names.put(building.getShortName(), building.getLongName());
         }
+        for (CampusPath p : paths) {
+            Graph.Node<Point> building1 = new Graph.Node<>(new Point(p.getX1(), p.getY1()));
+            Graph.Node<Point> building2 = new Graph.Node<>(new Point(p.getX2(), p.getY2()));
+            campusMap.addNode(building1);
+            campusMap.addNode(building2);
+            campusMap.addEdge(building1, building2, p.getDistance());
+            campusMap.addEdge(building2, building1, p.getDistance());
+        }
         checkRep();
     }
 
@@ -97,15 +105,6 @@ public class CampusMap implements ModelAPI {
         }
         if (!shortNameExists(startShortName) || ! shortNameExists(endShortName)) {
             throw new IllegalArgumentException();
-        }
-
-        for (CampusPath p : paths) {
-            Graph.Node<Point> building1 = new Graph.Node<>(new Point(p.getX1(), p.getY1()));
-            Graph.Node<Point> building2 = new Graph.Node<>(new Point(p.getX2(), p.getY2()));
-            campusMap.addNode(building1);
-            campusMap.addNode(building2);
-            campusMap.addEdge(building1, building2, p.getDistance());
-            campusMap.addEdge(building2, building1, p.getDistance());
         }
 
         Point startPoint = null;
