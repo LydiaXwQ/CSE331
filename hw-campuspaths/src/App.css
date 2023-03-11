@@ -17,6 +17,9 @@ and only exists for aesthetic purposes. The app would work just fine if this
 file was empty.
 */
 
+* {
+    box-sizing: border-box;
+}
 /* Centers component with ID "map-wrapper" and sets width and bottom spacing */
 #map {
     margin-left: auto;
@@ -26,8 +29,21 @@ file was empty.
     width: 800px;
 }
 
+.page {
+    background-color: antiquewhite;
+    min-height: 100vh;
+}
+
 /* Sets size of map, which has class name "leaflet-container" */
 .leaflet-container {
     width: 800px;
     height: 600px;
 }
+.app-title {
+    text-align: center;
+}
+.scroll {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
